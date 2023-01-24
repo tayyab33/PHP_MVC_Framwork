@@ -1,0 +1,17 @@
+{
+    "name": "tayyab/phpframemvc",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tayyab ali",
+            "email": "tayyali768@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
+}
