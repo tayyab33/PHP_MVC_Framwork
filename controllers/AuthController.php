@@ -19,8 +19,10 @@
          $User = new User();
         if($request->isPost()){
           $User->loadData($request->getBody());
-          if($User->validate() && $User->register()){
-            return "Success";
+          if($User->validate() && $User->save()){
+             Application::$app->session->setFlash('success', 'Thanks for registering');
+             Application::$app->response->redirect('/');
+             exit;
           }
           
        

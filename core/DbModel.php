@@ -2,6 +2,7 @@
 
 namespace app\core;
 use \app\core\Model;
+use \app\core\User;
 
 abstract class DbModel extends Model
 {
@@ -9,12 +10,16 @@ abstract class DbModel extends Model
    abstract public function attribute(): array;
    public function save(){
     $tableName = $this->tableName();
-    $attribute = $this->attribute();
-    $params = array_map(fn($attr) => ":$attr", $attribute);
-  $statement = self::prepare("INSERT INTO $
-  tableName (".implode(',', $attribute).") VALUES(".implode(',', $params).")");
-  var_dump($statement, $params, $attribute);
-   
+    $attributes = $this->attribute();
+    $params = array_map(fn($attr) => ":$attr", $attributes);
+  $statement = self::prepare("INSERT INTO $tableName (".implode(',', $attributes).") VALUES (".implode(',', $params).")");
+  // echo "<pre>";
+  //  var_dump($statement);
+  foreach ($attributes as  $attribute) {
+     $statement->bindValue(":$attribute", $this->{$attribute});
+  }
+   $statement->execute();
+   return true;
    }
    public static function prepare($sql){
    	return  Application::$app->db->pdo->prepare($sql);
