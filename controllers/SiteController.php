@@ -22,8 +22,6 @@
   	 function handleContact(Request $request){
          $body = $request->getBody();
          echo "<pre>";
-
-         var_dump($body);
   	 }
   }
 

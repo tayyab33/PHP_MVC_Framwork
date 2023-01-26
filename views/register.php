@@ -1,3 +1,6 @@
+<?php
+/** @var $model \app\models\User */
+?>
 <div>
 	<h1>Create an Account</h1>
     <form method="post">

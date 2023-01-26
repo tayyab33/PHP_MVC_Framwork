@@ -38,7 +38,7 @@ class Router{
     }
    
 
-    return call_user_func($callback, $this->request);
+    return call_user_func($callback, $this->request, $this->response);
  }
 public function randerView($view, $params = []){
     $layoutContent = $this->layoutContent();

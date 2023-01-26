@@ -24,6 +24,9 @@ abstract class Model{
 	{
       return [];
 	} 
+	public function getlabel($attribute){
+      return $this->labels()[$attribute] ?? $attribute;
+	}
 	public function validate(){
             foreach($this->rules() as $attribute => $rules){
             	$value = $this->{$attribute};
@@ -45,6 +48,7 @@ abstract class Model{
                	   	$this->addError($attribute, self::RULE_MAX, $rule);
                	   }
                	   if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}){
+               	   	$rule['match'] = $this->getLabel($rule['match']);
                	   	$this->addError($attribute, self::RULE_MATCH, $rule);
                	   }
                	   if($ruleName === self::RULE_UNIQUE){
@@ -57,20 +61,25 @@ abstract class Model{
                	   	$statement->execute();
                	   	$record = $statement->fetchObject();
                	   	if($record){
-               	   		$this->addError($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+               	   		$this->addError($attribute, self::RULE_UNIQUE, ['field' => $this->getlabel($attribute)]);
                	   	}
                	   }
                }
             }
             return empty($this->errors);
 	}
-	public function addError(string $attribute, string $rule, $params = []){
+	private function addError(string $attribute, string $rule, $params = []){
 		 $message = $this->errorMessages()[$rule] ?? '';
 		   foreach ($params as $key => $value) {
 		       $message = str_replace("{{$key}}", $value, $message);
 		   }
          $this->errors[$attribute][] = $message;
 	}
+
+		public function add_Error(string $attribute, string $message){
+         $this->errors[$attribute][] = $message;
+	}
+
 	public function errorMessages(){
 		return [
             self::RULE_REQUIRED => 'This field is required',
